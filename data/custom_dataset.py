@@ -119,6 +119,14 @@ class NeighborsDataset(Dataset):
         self.dataset.data = dataset.data.to(device)
         self.dataset.targets = dataset.targets.to(device)
         num_samples = self.dataset.data.shape[0]
+        num_indices = self.NN_indices.shape[0]
+        # Ensure we don't exceed the bounds of NN_indices
+        # If there's a mismatch, use the minimum size and trim the dataset accordingly
+        if num_samples != num_indices:
+            num_samples = min(num_samples, num_indices)
+            # Trim dataset to match indices size
+            self.dataset.data = self.dataset.data[:num_samples]
+            self.dataset.targets = self.dataset.targets[:num_samples]
         NN_index = np.array([np.random.choice(self.NN_indices[i], 1)[0] for i in range(num_samples)])
         FN_index = np.array([np.random.choice(self.FN_indices[i], 1)[0] for i in range(num_samples)])
         self.NNeighbor = all_data[NN_index]

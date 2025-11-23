@@ -8,24 +8,28 @@ class MyPath(object):
         db_names = {'msl', 'smap', 'smd', 'power', 'yahoo', 'kpi', 'swat', 'wadi', 'gecco', 'swan', 'ucr'}
         assert(database in db_names)
 
+        # Get current working directory and construct dataset paths
+        base_dir = os.getcwd()
+        datasets_dir = os.path.join(base_dir, 'datasets')
+
         if database == 'msl' or database == 'smap':
-            return '/home/edehghan/Data/CARLA-main/datasets/MSL_SMAP'
+            return os.path.join(datasets_dir, 'MSL_SMAP')
         elif database == 'ucr':
-            return '/home/edehghan/Data/CARLA-main/datasets/UCR'
+            return os.path.join(datasets_dir, 'UCR')
         elif database == 'yahoo':
-            return '/home/edehghan/Data/CARLA-main/datasets/Yahoo'
+            return os.path.join(datasets_dir, 'Yahoo')
         elif database == 'smd':
-            return '/home/edehghan/Data/CARLA-main/datasets/SMD'
+            return os.path.join(datasets_dir, 'SMD')
         elif database == 'swat':
-            return '/home/edehghan/Data/CARLA-main/datasets/SWAT'
+            return os.path.join(datasets_dir, 'SWAT')
         elif database == 'wadi':
-            return '/home/edehghan/Data/CARLA-main/datasets/WADI'
+            return os.path.join(datasets_dir, 'WADI')
         elif database == 'kpi':
-            return '/home/edehghan/Data/CARLA-main/datasets/KPI'
+            return os.path.join(datasets_dir, 'KPI')
         elif database == 'swan':
-            return '/home/edehghan/Data/CARLA-main/datasets/Swan'
+            return os.path.join(datasets_dir, 'Swan')
         elif database == 'gecco':
-            return '/home/edehghan/Data/CARLA-main/datasets/GECCO'
+            return os.path.join(datasets_dir, 'GECCO')
         
         else:
             raise NotImplementedError

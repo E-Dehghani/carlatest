@@ -9,7 +9,8 @@ import subprocess
 #     csv_reader = pd.read_csv(file, delimiter=',')
 # data_info = csv_reader[csv_reader['spacecraft'] == 'MSL']
 
-all_files = os.listdir(os.path.join('/home/edehghan/Data/CARLA-main/datasets/', 'SMD/train'))
+datasets_dir = os.path.join(os.getcwd(), 'datasets')
+all_files = os.listdir(os.path.join(datasets_dir, 'SMD', 'train'))
 file_list = [file for file in all_files if file.startswith('machine-')]
 file_list = sorted(file_list)
 print(file_list)

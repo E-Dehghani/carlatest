@@ -100,7 +100,8 @@ def main():
             #                                  split='train') # Dataset w/o augs for knn eval
 
     elif p['train_db_name'] == 'yahoo':
-        filename = os.path.join('/home/edehghan/Data/CARLA-main/datasets/', 'Yahoo/', p['fname'])
+        datasets_dir = os.path.join(os.getcwd(), 'datasets')
+        filename = os.path.join(datasets_dir, 'Yahoo', p['fname'])
         dataset = []
 
         print(filename)
