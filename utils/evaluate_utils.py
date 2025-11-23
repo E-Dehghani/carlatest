@@ -140,18 +140,23 @@ def classification_evaluate(predictions):
         # Entropy loss
         entropy_loss = entropy(torch.mean(probs, dim=0), input_as_probabilities=True).item()
 
-        # Consistency loss
-        similarity = torch.matmul(probs, probs.t())
+        # Consistency loss - compute only needed similarities to avoid memory issues
         neighbors = neighbors.contiguous().view(-1)
         anchors = org_anchors.contiguous().view(-1)
-        similarity = similarity[anchors, neighbors]
+        # Compute similarity only for anchor-neighbor pairs: sum(probs[anchor] * probs[neighbor])
+        anchor_probs = probs[anchors]  # Shape: [num_pairs, num_classes]
+        neighbor_probs = probs[neighbors]  # Shape: [num_pairs, num_classes]
+        similarity = torch.sum(anchor_probs * neighbor_probs, dim=1)  # Shape: [num_pairs]
         ones = torch.ones_like(similarity)
         consistency_loss = F.binary_cross_entropy(similarity, ones).item()
 
-        similarity = torch.matmul(probs, probs.t())
+        # Inconsistency loss - compute only needed similarities
         fneighbors = fneighbors.contiguous().view(-1)
         anchors = org_anchors.contiguous().view(-1)
-        similarity = similarity[anchors, fneighbors]
+        # Compute similarity only for anchor-fneighbor pairs
+        anchor_probs = probs[anchors]  # Shape: [num_pairs, num_classes]
+        fneighbor_probs = probs[fneighbors]  # Shape: [num_pairs, num_classes]
+        similarity = torch.sum(anchor_probs * fneighbor_probs, dim=1)  # Shape: [num_pairs]
         ones = torch.ones_like(similarity)
         inconsistency_loss = F.binary_cross_entropy(similarity, ones).item()
 
